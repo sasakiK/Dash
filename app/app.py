@@ -12,6 +12,12 @@ df = pd.read_csv(
     '8e0768211f6b747c0db42a9ce9a0937dafcbd8b2/'
     'indicators.csv')
 
+df_option = pd.read_csv('data/data.csv',
+                 encoding='Shift_JIS',
+                 names=('date', 'v1', 'v2', 'v3', 'v4'),
+                 index_col = 'date',
+                 parse_dates=True)
+
 available_indicators = df['Indicator Name'].unique()
 
 app.layout = html.Div([
@@ -44,7 +50,7 @@ app.layout = html.Div([
         style={'width': '80%', 'position': 'auto', 'margin': 'auto'})
         ])
 ],
-style={'position': 'relative', 'width': '100%', 'margin-bottom': '20px', 'font-family': 'Dosis'})
+style={'position': 'relative', 'width': '100%', 'margin': '60px 0', 'font-family': 'Dosis'})
 
 @app.callback(
     dash.dependencies.Output('indicator-graphic', 'figure'),
