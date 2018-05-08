@@ -6,6 +6,8 @@ import plotly.graph_objs as go
 
 app = dash.Dash()
 
+# --------------------------- preprocessing ---------------------------
+
 df_option = pd.read_csv('data/data.csv',
                  encoding='Shift_JIS',
                  names=('date', 'v1', 'v2', 'v3', 'v4'),
@@ -29,7 +31,34 @@ df_option['row_n'] = range(len(df_option))
 df_option['YMDH'] = df_option['YMDH'].astype(object)
 
 
-# available_indicators = df['Indicator Name'].unique()
+# define plot mark object
+date_marks={
+    0:  {'label': '04.11:18', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    15: {'label': '04.12:09', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    30: {'label': '04.13:00', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    45: {'label': '04.13:15', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    60: {'label': '04.14:06', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    75: {'label': '04.14:23', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    90: {'label': '04.15:12', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    105:{'label': '04.16:03', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    120:{'label': '04.16:18', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    135:{'label': '04.17:09', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    150:{'label': '04.18:00', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    165:{'label': '04.18:15', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    180:{'label': '04.19:06', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    195:{'label': '04.19:21', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    210:{'label': '04.20:12', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    225:{'label': '04.21:03', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    240:{'label': '04.21:18', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    255:{'label': '04.22:09', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    270:{'label': '04.23:00', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
+    282:{'label': '04.23:12', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}}
+}
+
+# define graph markers
+graph_marker={'size': 15, 'opacity': 0.5, 'line': {'width': 0.5, 'color': 'white'}}
+
+# --------------------------- app_layout ---------------------------
 
 app.layout = html.Div([
     html.H1(['Big Data Analytics option task'],
@@ -62,36 +91,11 @@ app.layout = html.Div([
             html.Br(),html.Br(),
             dcc.RangeSlider(
                 id= 'time-slider',
-                # min=df_option.YMDH.min(),
-                # max=df_option.YMDH.max(),
-                # value=[df_option.YMDH.min(), df_option.YMDH.max()]
-
                 min=df_option['row_n'].min(),
                 max=df_option['row_n'].max(),
                 value=[df_option['row_n'].min(), df_option['row_n'].max()],
                 step=15,
-                marks={
-                    0:  {'label': '04.11:18', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    15: {'label': '04.12:09', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    30: {'label': '04.13:00', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    45: {'label': '04.13:15', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    60: {'label': '04.14:06', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    75: {'label': '04.14:23', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    90: {'label': '04.15:12', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    105:{'label': '04.16:03', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    120:{'label': '04.16:18', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    135:{'label': '04.17:09', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    150:{'label': '04.18:00', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    165:{'label': '04.18:15', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    180:{'label': '04.19:06', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    195:{'label': '04.19:21', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    210:{'label': '04.20:12', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    225:{'label': '04.21:03', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    240:{'label': '04.21:18', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    255:{'label': '04.22:09', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    270:{'label': '04.23:00', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}},
-                    282:{'label': '04.23:12', 'style': {'color': '#77b0b1','transform': 'rotate(-45deg)'}}
-                }
+                marks=date_marks
             )
         ],
         style={'width': '80%', 'position': 'auto', 'margin': 'auto'})
@@ -115,24 +119,12 @@ def update_graph(xaxis_type, xaxis_type2, time_value):
         go.Scatter(
             x=dff['YMDH'],
             y=dff[xaxis_type],
-            # text=dff[dff['Indicator Name'] == yaxis_column_name]['Country Name'],
-            # mode='markers',
-            marker={
-                'size': 15,
-                'opacity': 0.5,
-                'line': {'width': 0.5, 'color': 'white'}
-            }),
+            marker=graph_marker ),
         go.Scatter(
             x=dff['YMDH'],
             y=dff[xaxis_type2],
-            # text=dff[dff['Indicator Name'] == yaxis_column_name]['Country Name'],
-            # mode='markers',
-            marker={
-                'size': 15,
-                'opacity': 0.5,
-                'line': {'width': 0.5, 'color': 'white'}
-            }
-        )],
+            marker=graph_marker )
+        ],
         'layout': go.Layout(
             xaxis={
                 'title': 'hour - mean'
@@ -145,6 +137,8 @@ def update_graph(xaxis_type, xaxis_type2, time_value):
             hovermode='closest'
         )
     }
+
+# --------------------------- add stylesheet ---------------------------
 
 external_css = [
     # dash stylesheet
