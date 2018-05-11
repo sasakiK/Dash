@@ -5,7 +5,7 @@ import pandas as pd
 import plotly.graph_objs as go
 
 app = dash.Dash()
-
+app.title = 'BDA option task'
 # --------------------------- preprocessing ---------------------------
 
 df_option = pd.read_csv('data/data.csv',
